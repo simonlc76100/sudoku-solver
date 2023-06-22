@@ -55,11 +55,18 @@ function getGridboxes(rowsArray) {
   return boxesArray;
 }
 
+function solveGrid() {
+  const cells = document.querySelectorAll('td[id^="cell_"]');
+  const rowsArray = getGridRows(cells);
+  const colsArray = getGridCols(rowsArray);
+  const boxesArray = getGridboxes(rowsArray);
+}
+
 function main() {
   createGrid();
 
-  const cells = document.querySelectorAll('td[id^="cell_"]');
-  const rowsArray = getGridRows(cells);
+  const solveButton = document.getElementById("solveButton");
+  solveButton.addEventListener("click", solveGrid);
 }
 
 document.addEventListener("DOMContentLoaded", main);
