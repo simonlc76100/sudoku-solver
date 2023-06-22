@@ -55,10 +55,6 @@ function getGridboxes(rowsArray) {
   return boxesArray;
 }
 
-function fillCell(cell) {
-  cell.firstChild.value = Math.floor(Math.random() * 9) + 1;
-}
-
 function solveGrid() {
   const cells = document.querySelectorAll('td[id^="cell_"]');
   const rowsArray = getGridRows(cells);
@@ -69,7 +65,30 @@ function solveGrid() {
   console.log(colsArray);
   console.log(boxesArray);
 
-  fillCell(rowsArray);
+  for (let i = 0; i < rowsArray.length; i++) {
+    for (let j = 0; j < rowsArray[i].length; j++) {
+      let randomNum = Math.floor(Math.random() * 9) + 1;
+
+      let currentRow = rowsArray[i].map((cell) => {
+        return cell.firstChild.value;
+      });
+      let currentCol = colsArray[j].map((cell) => {
+        return cell.firstChild.value;
+      });
+
+      let check = false;
+
+      while (!check) {
+        randomNum = Math.floor(Math.random() * 9) + 1;
+        if (
+          !currentRow.includes(String(randomNum)) &&
+          !currentCol.includes(String(randomNum))
+        )
+          rowsArray[i][j].firstChild.value = randomNum;
+        check = true;
+      }
+    }
+  }
 }
 
 function main() {
