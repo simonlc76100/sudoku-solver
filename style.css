@@ -1,0 +1,46 @@
+html {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Roboto", sans-serif;
+}
+
+#sudokuGrid {
+  border-collapse: collapse;
+  border: 2px solid black;
+}
+
+#sudokuGrid > tbody > tr > td {
+  height: 50px;
+  width: 50px;
+}
+
+#sudokuGrid > tbody > tr:nth-child(3n) > td {
+  border-bottom: 2px solid black;
+}
+
+#sudokuGrid > tbody > tr > td:nth-child(3n) {
+  border-right: 2px solid black;
+}
+
+#sudokuGrid > tbody > tr > td {
+  border: 1px solid gray;
+}
+
+#sudokuGrid > tbody > tr > td > input {
+  border: none;
+  width: inherit;
+  height: inherit;
+  font-size: 30px;
+  text-align: center;
+  vertical-align: center;
+}
+
+#sudokuGrid > tbody > tr > td > input:focus {
+  border: none;
+  outline: none;
+}
