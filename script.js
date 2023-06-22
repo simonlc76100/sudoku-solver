@@ -22,6 +22,16 @@ function getGridRows(cells) {
   return rowsArray;
 }
 
+function getGridCols(rowsArray) {
+  let colsArray = new Array(9).fill().map(() => new Array(9));
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      colsArray[i][j] = rowsArray[j][i];
+    }
+  }
+  return colsArray;
+}
+
 function main() {
   createGrid();
 
