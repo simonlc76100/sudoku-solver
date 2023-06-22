@@ -55,11 +55,21 @@ function getGridboxes(rowsArray) {
   return boxesArray;
 }
 
+function fillCell(cell) {
+  cell.firstChild.value = Math.floor(Math.random() * 9) + 1;
+}
+
 function solveGrid() {
   const cells = document.querySelectorAll('td[id^="cell_"]');
   const rowsArray = getGridRows(cells);
   const colsArray = getGridCols(rowsArray);
   const boxesArray = getGridboxes(rowsArray);
+
+  console.log(rowsArray);
+  console.log(colsArray);
+  console.log(boxesArray);
+
+  fillCell(rowsArray);
 }
 
 function main() {
