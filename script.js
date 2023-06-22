@@ -32,6 +32,29 @@ function getGridCols(rowsArray) {
   return colsArray;
 }
 
+function getGridboxes(rowsArray) {
+  let boxesValues = [];
+  for (let boxRow = 0; boxRow < 3; boxRow++) {
+    for (let boxCol = 0; boxCol < 3; boxCol++) {
+      for (let cellRow = 0; cellRow < 3; cellRow++) {
+        for (let cellCol = 0; cellCol < 3; cellCol++) {
+          let gridRow = boxRow * 3 + cellRow;
+          let gridCol = boxCol * 3 + cellCol;
+
+          boxesValues.push(rowsArray[gridRow][gridCol]);
+        }
+      }
+    }
+  }
+  let boxesArray = new Array(9).fill().map(() => new Array(9));
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      boxesArray[i][j] = boxesValues[i * 9 + j];
+    }
+  }
+  return boxesArray;
+}
+
 function main() {
   createGrid();
 
