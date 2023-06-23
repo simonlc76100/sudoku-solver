@@ -55,37 +55,64 @@ function getGridboxes(rowsArray) {
   return boxesArray;
 }
 
-function solveGrid() {
+function getEmptyCells(rowsArray) {
+  let emptyCellArray = [];
+
+  for (let i = 0; i < rowsArray.length; i++) {
+    for (let j = 0; j < rowsArray[i].length; j++) {
+      if (rowsArray[i][j].firstChild.value === "") {
+        const emptyCell = {
+          rowIndex: i,
+          colIndex: j,
+        };
+        emptyCellArray.push(emptyCell);
+      }
+    }
+  }
+  return emptyCellArray;
+}
+
+async function solveGrid(timer) {
   const cells = document.querySelectorAll('td[id^="cell_"]');
   const rowsArray = getGridRows(cells);
   const colsArray = getGridCols(rowsArray);
   const boxesArray = getGridboxes(rowsArray);
+  const emptyCellArray = getEmptyCells(rowsArray);
 
   console.log(rowsArray);
   console.log(colsArray);
   console.log(boxesArray);
+  console.log(emptyCellArray);
 
   for (let i = 0; i < rowsArray.length; i++) {
     for (let j = 0; j < rowsArray[i].length; j++) {
-      let randomNum = Math.floor(Math.random() * 9) + 1;
-
       let currentRow = rowsArray[i].map((cell) => {
         return cell.firstChild.value;
       });
+      console.log("r", currentRow);
       let currentCol = colsArray[j].map((cell) => {
         return cell.firstChild.value;
       });
+      console.log("c", currentCol);
 
-      let check = false;
+      boxIndex = Math.floor(i / 3) * 3 + Math.floor(j / 3);
 
-      while (!check) {
-        randomNum = Math.floor(Math.random() * 9) + 1;
-        if (
-          !currentRow.includes(String(randomNum)) &&
-          !currentCol.includes(String(randomNum))
-        )
-          rowsArray[i][j].firstChild.value = randomNum;
-        check = true;
+      let currentBox = boxesArray[boxIndex].map((cell) => {
+        return cell.firstChild.value;
+      });
+      console.log("s", currentBox);
+
+      if (rowsArray[i][j].firstChild.value === "") {
+        let randomNum;
+        do {
+          randomNum = Math.floor(Math.random() * 9) + 1;
+        } while (
+          currentRow.includes(String(randomNum)) ||
+          currentCol.includes(String(randomNum)) ||
+          currentBox.includes(String(randomNum))
+        );
+        rowsArray[i][j].firstChild.value = randomNum;
+        await timer(1);
       }
     }
   }
@@ -94,8 +121,12 @@ function solveGrid() {
 function main() {
   createGrid();
 
+  const timer = (ms) => new Promise((res) => setTimeout(res, ms));
+
   const solveButton = document.getElementById("solveButton");
-  solveButton.addEventListener("click", solveGrid);
+  solveButton.addEventListener("click", function () {
+    solveGrid(timer);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", main);
