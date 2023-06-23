@@ -84,37 +84,36 @@ async function solveGrid(timer) {
   console.log(boxesArray);
   console.log(emptyCellArray);
 
-  for (let i = 0; i < rowsArray.length; i++) {
-    for (let j = 0; j < rowsArray[i].length; j++) {
-      let currentRow = rowsArray[i].map((cell) => {
-        return cell.firstChild.value;
-      });
-      console.log("r", currentRow);
-      let currentCol = colsArray[j].map((cell) => {
-        return cell.firstChild.value;
-      });
-      console.log("c", currentCol);
+  for (let i = 0; i < emptyCellArray.length; i++) {
+    let currentRow = rowsArray[emptyCellArray[i].rowIndex].map((cell) => {
+      return cell.firstChild.value;
+    });
 
-      boxIndex = Math.floor(i / 3) * 3 + Math.floor(j / 3);
+    let currentCol = colsArray[emptyCellArray[i].colIndex].map((cell) => {
+      return cell.firstChild.value;
+    });
 
-      let currentBox = boxesArray[boxIndex].map((cell) => {
-        return cell.firstChild.value;
-      });
-      console.log("s", currentBox);
+    boxIndex =
+      Math.floor(emptyCellArray[i].rowIndex / 3) * 3 +
+      Math.floor(emptyCellArray[i].colIndex / 3);
 
-      if (rowsArray[i][j].firstChild.value === "") {
-        let randomNum;
-        do {
-          randomNum = Math.floor(Math.random() * 9) + 1;
-        } while (
-          currentRow.includes(String(randomNum)) ||
-          currentCol.includes(String(randomNum)) ||
-          currentBox.includes(String(randomNum))
-        );
-        rowsArray[i][j].firstChild.value = randomNum;
-        await timer(1);
+    let currentBox = boxesArray[boxIndex].map((cell) => {
+      return cell.firstChild.value;
+    });
+
+    for (value = 1; value <= 9; value++) {
+      if (
+        !currentRow.includes(String(value)) &&
+        !currentCol.includes(String(value)) &&
+        !currentBox.includes(String(value))
+      ) {
+        rowsArray[emptyCellArray[i].rowIndex][
+          emptyCellArray[i].colIndex
+        ].firstChild.value = value;
+        break;
       }
     }
+    await timer(10);
   }
 }
 
