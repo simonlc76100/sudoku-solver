@@ -18,7 +18,7 @@ function getGridMatrix(cells) {
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
       if (cells[i * 9 + j].firstChild.value !== "")
-        matrix[i][j] = parseInt(cells[i * 9 + j].firstChild.value);
+        gridMatrix[i][j] = parseInt(cells[i * 9 + j].firstChild.value);
     }
   }
   return gridMatrix;
