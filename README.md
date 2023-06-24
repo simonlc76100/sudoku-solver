@@ -5,7 +5,7 @@ This small project is a web-based application built in HTML/CSS/JavaScript that 
 ## Features
 
 - **Sudoku Grid**: Input your own puzzles directly into the Sudoku grid, it must be a solvable grid otherwise it won't work.
-- **Solve Button**: Click to have the grid solved instantly.
+- **Solve Button**: Click to have the grid solved with a "real-time" solving effect.
 
 ## How It Works
 
