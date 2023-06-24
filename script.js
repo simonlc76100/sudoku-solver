@@ -32,7 +32,7 @@ function getNextEmptyCellPos(gridMatrix) {
       }
     }
   }
-  return false
+  return false;
 }
 
 function canPlaceNumber(gridMatrix, nextEmptyCellPos, number) {
@@ -65,12 +65,27 @@ function canPlaceNumber(gridMatrix, nextEmptyCellPos, number) {
   return false;
 }
 
-function solveGrid() {
-  const cells = document.querySelectorAll('td[id^="cell_"]');
-  let gridMatrix = getGridMatrix(cells);
+function backtrackSolving(gridMatrix) {
   let nextEmptyCellPos = getNextEmptyCellPos(gridMatrix);
 
-  console.log(canPlaceNumber(gridMatrix, nextEmptyCellPos, 2));
+  if (nextEmptyCellPos === false) return true;
+
+  for (let number = 1; number <= 9; number++) {
+    if (canPlaceNumber(gridMatrix, nextEmptyCellPos, number) === true) {
+      gridMatrix[nextEmptyCellPos[0]][nextEmptyCellPos[1]] = number;
+      if (backtrackSolving(gridMatrix)) return true;
+      else gridMatrix[nextEmptyCellPos[0]][nextEmptyCellPos[1]] = 0;
+    }
+  }
+  return false;
+}
+
+function solveGrid() {
+  const cells = document.querySelectorAll('td[id^="cell_"]');
+  const gridMatrix = getGridMatrix(cells);
+
+  backtrackSolving(gridMatrix);
+  console.log(gridMatrix);
 }
 
 function main() {
