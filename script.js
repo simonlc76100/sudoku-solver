@@ -24,7 +24,7 @@ function getGridMatrix(cells) {
   return gridMatrix;
 }
 
-function getNextEmptyCell(gridMatrix) {
+function getNextEmptyCellPos(gridMatrix) {
   for (let i = 0; i < gridMatrix.length; i++) {
     for (let j = 0; j < gridMatrix[i].length; j++) {
       if (gridMatrix[i][j] === 0) {
@@ -34,19 +34,22 @@ function getNextEmptyCell(gridMatrix) {
   }
 }
 
-function canPlaceNumber(gridMatrix, emptyCellPos) {
-  let emptyCellRow = emptyCellPos[0];
-  let emptyCellCol = emptyCellPos[1];
+function canPlaceNumber(gridMatrix, nextEmptyCellPos, number) {
+  let nextEmptyCellRow = nextEmptyCellPos[0];
+  let nextEmptyCellCol = nextEmptyCellPos[1];
 
-  let row = gridMatrix[emptyCellRow];
+  let row = gridMatrix[nextEmptyCellRow];
 
   let col = [];
 
   for (let i = 0; i < gridMatrix.length; i++) {
-    col.push(gridMatrix[i][emptyCellCol]);
+    col.push(gridMatrix[i][nextEmptyCellCol]);
   }
 
-  let boxPos = [Math.floor(emptyCellRow / 3), Math.floor(emptyCellCol / 3)];
+  let boxPos = [
+    Math.floor(nextEmptyCellRow / 3),
+    Math.floor(nextEmptyCellCol / 3),
+  ];
 
   let box = [];
 
@@ -55,21 +58,25 @@ function canPlaceNumber(gridMatrix, emptyCellPos) {
       box.push(gridMatrix[i][j]);
     }
   }
+
+  if (!row.includes(number) && !col.includes(number) && !box.includes(number))
+    return true;
+  return false;
 }
 
-function test() {
+function solveGrid() {
   const cells = document.querySelectorAll('td[id^="cell_"]');
   let gridMatrix = getGridMatrix(cells);
-  let nextEmptyCell = getNextEmptyCell(gridMatrix);
+  let nextEmptyCellPos = getNextEmptyCellPos(gridMatrix);
 
-  canPlaceNumber(gridMatrix, nextEmptyCell);
+  console.log(canPlaceNumber(gridMatrix, nextEmptyCellPos, 2));
 }
 
 function main() {
   createGrid();
 
   const solveButton = document.getElementById("solveButton");
-  solveButton.addEventListener("click", test);
+  solveButton.addEventListener("click", solveGrid);
 }
 
 document.addEventListener("DOMContentLoaded", main);
