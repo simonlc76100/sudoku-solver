@@ -24,6 +24,16 @@ function getGridMatrix(cells) {
   return gridMatrix;
 }
 
+function getNextEmptyCell(gridMatrix) {
+  for (let i = 0; i < gridMatrix.length; i++) {
+    for (let j = 0; j < gridMatrix[i].length; j++) {
+      if (gridMatrix[i][j] === 0) {
+        return [i, j];
+      }
+    }
+  }
+}
+
 function main() {
   createGrid();
 
