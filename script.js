@@ -34,10 +34,35 @@ function getNextEmptyCell(gridMatrix) {
   }
 }
 
+function canPlaceNumber(gridMatrix, emptyCellPos) {
+  let emptyCellRow = emptyCellPos[0];
+  let emptyCellCol = emptyCellPos[1];
+
+  let row = gridMatrix[emptyCellRow];
+
+  let col = [];
+
+  for (let i = 0; i < gridMatrix.length; i++) {
+    col.push(gridMatrix[i][emptyCellCol]);
+  }
+
+  let boxPos = [Math.floor(emptyCellRow / 3), Math.floor(emptyCellCol / 3)];
+
+  let box = [];
+
+  for (let i = 3 * boxPos[0]; i < 3 * boxPos[0] + 3; i++) {
+    for (let j = 3 * boxPos[1]; j < 3 * boxPos[1] + 3; j++) {
+      box.push(gridMatrix[i][j]);
+    }
+  }
+}
+
 function test() {
   const cells = document.querySelectorAll('td[id^="cell_"]');
   let gridMatrix = getGridMatrix(cells);
-  console.log(getNextEmptyCell(gridMatrix));
+  let nextEmptyCell = getNextEmptyCell(gridMatrix);
+
+  canPlaceNumber(gridMatrix, nextEmptyCell);
 }
 
 function main() {
