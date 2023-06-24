@@ -80,12 +80,20 @@ function backtrackSolving(gridMatrix) {
   return false;
 }
 
+function updateGridWhenSolved(gridMatrix) {
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      const cell = document.getElementById("cell_" + i + "_" + j);
+      cell.firstChild.value = gridMatrix[i][j];
+    }
+  }
+}
+
 function solveGrid() {
   const cells = document.querySelectorAll('td[id^="cell_"]');
   const gridMatrix = getGridMatrix(cells);
 
-  backtrackSolving(gridMatrix);
-  console.log(gridMatrix);
+  if (backtrackSolving(gridMatrix)) updateGridWhenSolved(gridMatrix);
 }
 
 function main() {
