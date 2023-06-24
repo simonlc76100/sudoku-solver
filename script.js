@@ -32,6 +32,7 @@ function getNextEmptyCellPos(gridMatrix) {
       }
     }
   }
+  return false
 }
 
 function canPlaceNumber(gridMatrix, nextEmptyCellPos, number) {
