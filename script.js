@@ -13,12 +13,11 @@ function createGrid() {
 }
 
 function getGridMatrix(cells) {
-  let gridMatrix = new Array(9).fill().map(() => new Array(9).fill(0));
+  let gridMatrix = new Array(9).fill().map(() => new Array(9));
 
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
-      if (cells[i * 9 + j].firstChild.value !== "")
-        gridMatrix[i][j] = parseInt(cells[i * 9 + j].firstChild.value);
+      gridMatrix[i][j] = cells[i * 9 + j];
     }
   }
   return gridMatrix;
@@ -27,7 +26,7 @@ function getGridMatrix(cells) {
 function getNextEmptyCellPos(gridMatrix) {
   for (let i = 0; i < gridMatrix.length; i++) {
     for (let j = 0; j < gridMatrix[i].length; j++) {
-      if (gridMatrix[i][j] === 0) {
+      if (gridMatrix[i][j].firstChild.value === "") {
         return [i, j];
       }
     }
@@ -40,13 +39,19 @@ function canPlaceNumber(gridMatrix, nextEmptyCellPos, number) {
   let nextEmptyCellCol = nextEmptyCellPos[1];
 
   let row = gridMatrix[nextEmptyCellRow];
-
+  let rowValues = row.map((cell) => {
+    if (cell.firstChild.value === "") return 0;
+    return parseInt(cell.firstChild.value);
+  });
   let col = [];
 
   for (let i = 0; i < gridMatrix.length; i++) {
     col.push(gridMatrix[i][nextEmptyCellCol]);
   }
-
+  let colValues = col.map((cell) => {
+    if (cell.firstChild.value === "") return 0;
+    return parseInt(cell.firstChild.value);
+  });
   let boxPos = [
     Math.floor(nextEmptyCellRow / 3),
     Math.floor(nextEmptyCellCol / 3),
@@ -60,40 +65,46 @@ function canPlaceNumber(gridMatrix, nextEmptyCellPos, number) {
     }
   }
 
-  if (!row.includes(number) && !col.includes(number) && !box.includes(number))
+  let boxValues = box.map((cell) => {
+    if (cell.firstChild.value === "") return 0;
+    return parseInt(cell.firstChild.value);
+  });
+
+  if (
+    !rowValues.includes(number) &&
+    !colValues.includes(number) &&
+    !boxValues.includes(number)
+  )
     return true;
   return false;
 }
 
-function backtrackSolving(gridMatrix) {
+async function backtrackSolving(gridMatrix, timer) {
   let nextEmptyCellPos = getNextEmptyCellPos(gridMatrix);
 
   if (nextEmptyCellPos === false) return true;
 
   for (let number = 1; number <= 9; number++) {
     if (canPlaceNumber(gridMatrix, nextEmptyCellPos, number) === true) {
-      gridMatrix[nextEmptyCellPos[0]][nextEmptyCellPos[1]] = number;
-      if (backtrackSolving(gridMatrix)) return true;
-      else gridMatrix[nextEmptyCellPos[0]][nextEmptyCellPos[1]] = 0;
+      gridMatrix[nextEmptyCellPos[0]][nextEmptyCellPos[1]].firstChild.value =
+        number;
+      if (await backtrackSolving(gridMatrix, timer)) return true;
+      else
+        gridMatrix[nextEmptyCellPos[0]][nextEmptyCellPos[1]].firstChild.value =
+          "";
     }
+    await timer(1);
   }
   return false;
 }
 
-function updateGridWhenSolved(gridMatrix) {
-  for (let i = 0; i < 9; i++) {
-    for (let j = 0; j < 9; j++) {
-      const cell = document.getElementById("cell_" + i + "_" + j);
-      cell.firstChild.value = gridMatrix[i][j];
-    }
-  }
-}
-
-function solveGrid() {
+async function solveGrid() {
   const cells = document.querySelectorAll('td[id^="cell_"]');
   const gridMatrix = getGridMatrix(cells);
 
-  if (backtrackSolving(gridMatrix)) updateGridWhenSolved(gridMatrix);
+  const timer = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  await backtrackSolving(gridMatrix, timer);
 }
 
 function main() {
