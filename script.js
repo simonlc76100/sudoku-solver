@@ -34,14 +34,17 @@ function getNextEmptyCell(gridMatrix) {
   }
 }
 
+function test() {
+  const cells = document.querySelectorAll('td[id^="cell_"]');
+  let gridMatrix = getGridMatrix(cells);
+  console.log(getNextEmptyCell(gridMatrix));
+}
+
 function main() {
   createGrid();
 
-  const cells = document.querySelectorAll('td[id^="cell_"]');
-
-  console.log(getGridMatrix(cells));
-
   const solveButton = document.getElementById("solveButton");
+  solveButton.addEventListener("click", test);
 }
 
 document.addEventListener("DOMContentLoaded", main);
