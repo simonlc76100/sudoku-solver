@@ -7,8 +7,19 @@ function createGrid() {
       const cell = row.insertCell(j);
       cell.id = "cell_" + i + "_" + j;
       const input = document.createElement("input");
+      input.addEventListener("input", isInputValid);
       cell.appendChild(input);
     }
+  }
+}
+
+function isInputValid(event) {
+  const input = event.target;
+  let value = input.value;
+
+  if (!/^[1-9]$/.test(value)) {
+    value = value.slice(-1);
+    input.value = /^[1-9]$/.test(value) ? value : "";
   }
 }
 
